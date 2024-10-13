@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "lib.h"
+#include "record.h"
 #define SIZE 80
 
 
