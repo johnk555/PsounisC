@@ -14,6 +14,8 @@ class complex {
     complex operator- (const complex &right);
     complex operator++(int right);
     complex &operator++();
+    complex &operator=(const complex &right);
+    complex &operator=(int right);
 
     private:
     double real;
@@ -23,11 +25,11 @@ class complex {
 
 int main() {
     complex a(1.0,1.0);
-    complex b(2.0,3.0);
+    //complex b(2.0,3.0);
 
     complex c;
 
-    c=++a;
+    c=a;
 
     cout<<"a="<<a.get_real()<<","<<a.get_imag()<<endl;
     cout<<"c="<<c.get_real()<<","<<c.get_imag()<<endl;
@@ -88,3 +90,17 @@ complex &complex::operator++() {
     imag++;
     return *this;
 }
+complex &complex::operator=(const complex &right) {
+    if (this == &right) return *this;
+    real = right.real;
+    imag = right.imag;
+
+    return *this;
+}
+
+complex &complex::operator=(int right) {
+    real = right;
+    imag = right;
+    return *this;
+}
+
