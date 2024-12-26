@@ -20,6 +20,7 @@ class STRING {
         bool operator>(STRING &right);
         bool operator==(STRING &right);
         friend ostream &operator<<(ostream &left, STRING &right);
+        friend istream &operator>>(istream &left, STRING &right);
     private:
        int length;
        char *str;
@@ -34,6 +35,7 @@ int main()
 
     s2=s1;
 
+    cin>>s1;
     s2[2]='a';
     s2[3]='t';
 
@@ -148,5 +150,19 @@ bool STRING::operator==(STRING &right)
 }
 ostream &operator<<(ostream &left, STRING &right) {
     left<<right.str;
+    return left;
+}
+istream &operator>>(istream &left, STRING &right) {
+    char in_str[80];
+    left>>in_str;
+    if (right.str!=NULL) {
+        delete right.str;
+        right.str = new char [strlen(in_str)+1];
+    }
+    if (right.str==NULL) {
+        cout<<"Error Allocating Memory";
+    }
+    right.length=strlen(in_str);
+    strcpy(right.str, in_str);
     return left;
 }
