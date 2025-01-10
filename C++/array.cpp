@@ -1,21 +1,21 @@
-/* cpp6.askisi2.cpp */
+/* cpp7.askisi1.cpp */
 
 #include <iostream>
 using namespace std;
 
+template<typename T>
 class ARRAY {
 public:
     ARRAY(int in_n);
     ARRAY(const ARRAY &ob);
     ~ARRAY();
-    int get_n() const;
-    void print();
-    int &operator[] (int i);
+    T get_n() const;
+    T &operator[] (int i);
     ARRAY &operator= (ARRAY &right);
-    ARRAY &operator+= (int right);
-    friend ostream &operator<<(ostream &left, const ARRAY &right);
+    ARRAY &operator+= (T right);
+    template <typename U>friend ostream &operator<<(ostream &left, const ARRAY<U> &ob);
 private:
-    int *p;
+    T *p;
     int n;
 };
 
@@ -23,57 +23,50 @@ private:
 int main()
 {
     int n=10;
-    ARRAY pin(n);
-    ARRAY pin2(2);
+    ARRAY<double> pin(n);
 
-    for (int i = 0; i < n; i++)
-        pin[i]=i*i;
+    for (int i=0; i<n; i++)
+        pin[i]=i*0.1;
 
-    pin2=pin;
-    pin2+=5;
-
-    cout << pin << endl;
-    cout << pin2 << endl;
+    cout<<pin;
 
     return 0;
 }
 
-ARRAY::ARRAY(int in_n)
+template<typename T>
+ARRAY<T>::ARRAY(int in_n)
 {
     n = in_n;
 
-    p = new int [n];
+    p = new T [n];
     if (!p)
         cout<<"Error allocating memory!";
 }
 
-ARRAY::ARRAY(const ARRAY &ob)
+template<typename T>
+ARRAY<T>::ARRAY(const ARRAY &ob)
 {
     n = ob.get_n();
 
-    p = new int [n];
+    p = new T [n];
     if (!p) cout<<"Memory Allocation Error!";
+
 }
 
-ARRAY::~ARRAY()
+template<typename T>
+ARRAY<T>::~ARRAY()
 {
     delete [] p;
 }
 
-int ARRAY::get_n() const
+template<typename T>
+T ARRAY<T>::get_n() const
 {
     return n;
 }
 
-void ARRAY::print()
-{
-    int i;
-
-    for (i=0; i<n; i++)
-        cout<<p[i]<<" ";
-}
-
-int &ARRAY::operator[] (int i)
+template<typename T>
+T &ARRAY<T>::operator[] (int i)
 {
     if (i>=0 && i<n)
         return p[i];
@@ -82,13 +75,14 @@ int &ARRAY::operator[] (int i)
 
 }
 
-ARRAY &ARRAY::operator= (ARRAY &right)
+template<typename T>
+ARRAY<T> &ARRAY<T>::operator= (ARRAY &right)
 {
     if (this==&right) return *this;
 
     n=right.n;
     delete [] p;
-    p=new int [n];
+    p=new T [n];
     if(!p) cout<<"Error Allcoating Memory";
 
     for (int i=0; i<n; i++)
@@ -97,15 +91,16 @@ ARRAY &ARRAY::operator= (ARRAY &right)
     return *this;
 }
 
-ARRAY &ARRAY::operator+= (int right)
+template<typename T>
+ARRAY<T> &ARRAY<T>::operator+= (T right)
 {
-    int newn=n+right;
-    int *newp;
+    T newn=n+right;
+    T *newp;
     int i;
 
     if (right>0)
     {
-        newp = new int [newn];
+        newp = new T [newn];
         if (!newp) cout<<"Error Allocating Memory";
 
         for (i=0; i<n; i++)
@@ -119,12 +114,18 @@ ARRAY &ARRAY::operator+= (int right)
     }
     else
         cout<<"Wrong index!";
-    return *this;
+
 }
-ostream &operator<<(ostream &left, const ARRAY &right) {
+
+template<typename T>
+ostream &operator<<(ostream &left, const ARRAY<T> &ob)
+{
     left<<"[";
-    for (int i=0; i<right.get_n(); i++)
-        left<<right.p[i]<<", ";
+    for (int i=0; i<ob.n-1; i++)
+        cout<<ob.p[i]<<" ";
+    left<<ob.p[ob.n-1];
     left<<"]";
+
     return left;
 }
+
