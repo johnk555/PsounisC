@@ -6,12 +6,12 @@ using namespace std;
 template<typename T>
 class stack {
 public:
-    static int ob_cnt;
     stack();
     bool empty();
     bool full();
     bool push(T elem);
     bool pop(T *elem);
+    template<typename U>friend ostream& operator<<(ostream& left, const stack<U>& right);
 private:
     T array[STACK_SIZE];
     int top;
@@ -20,22 +20,30 @@ private:
 int main() {
 
     stack<int> st;
-    stack<int> st2;
-    stack<string> st3;
 
-    cout<<stack<int>::ob_cnt<<endl;
-    cout<<stack<string>::ob_cnt<<endl;
+    int temp;
+
+    st.push(1);
+    cout << st <<endl;
+
+    st.push(2);
+    cout<<st<<endl;
+
+    st.pop(&temp);
+    cout<<st<<endl;
+
+    st.push(3);
+    cout<<st<<endl;
+
+    st.push(4);
+    cout<<st<<endl;
 
     return 0;
 }
 
 template<typename T>
-int stack<T>::ob_cnt=0;
-
-template<typename T>
 stack<T>::stack() {
     top = -1;
-    ob_cnt++;
 }
 
 template<typename T>
@@ -66,4 +74,11 @@ bool stack<T>::pop(T *elem) {
     }
     cout << "Stack is empty" << endl;
     return false;
+}
+template<typename T>
+ostream &operator<<(ostream &left,const stack<T> &right){
+
+    for (int i = 0; i <= right.top; i++)
+        left<<right.array[i]<<" ";
+    return left;
 }
